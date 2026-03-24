@@ -12,7 +12,7 @@
 
 //*****************************************************************************
 //
-// Copyright (c) 2024, Ambiq Micro, Inc.
+// Copyright (c) 2023, Ambiq Micro, Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 //
-// This is part of revision release_sdk_4_5_0-a1ef3b89f9 of the AmbiqSuite Development Package.
+// This is part of revision release_sdk_4_4_1-7498c7b770 of the AmbiqSuite Development Package.
 //
 //*****************************************************************************
 
@@ -103,6 +103,7 @@ extern "C"
 #if (AM_HAL_PWRCTL_SET_CORELDO_MEMLDO_IN_PARALLEL == 0)
 #error Apollo4L requires AM_HAL_PWRCTL_SET_CORELDO_MEMLDO_IN_PARALLEL.
 #endif
+
 
 //*****************************************************************************
 //
@@ -286,6 +287,7 @@ typedef enum
     AM_HAL_PWRCTRL_CONTROL_TEMPCO_GETMEASTEMP,  // TempCo, return the measured temperature
 #endif // AM_HAL_TEMPCO_LP
 } am_hal_pwrctrl_control_e;
+
 
 //*****************************************************************************
 //

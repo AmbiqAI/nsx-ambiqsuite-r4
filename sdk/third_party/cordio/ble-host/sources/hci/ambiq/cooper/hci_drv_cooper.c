@@ -8,7 +8,7 @@
 
 //*****************************************************************************
 //
-// Copyright (c) 2024, Ambiq Micro, Inc.
+// Copyright (c) 2023, Ambiq Micro, Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 //
-// This is part of revision release_sdk_4_5_0-a1ef3b89f9 of the AmbiqSuite Development Package.
+// This is part of revision release_sdk_4_4_1-7498c7b770 of the AmbiqSuite Development Package.
 //
 //*****************************************************************************
 
@@ -284,15 +284,15 @@ static void HciDrvIntService(void *pArg)
     //
     // Send an event to get processed in the HCI handler.
     //
+    // ns_lp_printf("HciDrvIntService\n");
+    // ns_delay_us(300);
     WsfSetEvent(g_HciDrvHandleID, BLE_TRANSFER_NEEDED_EVENT);
 }
 
 static void ClkReqIntService(void *pArg)
 {
-    // There is case that Cooper will be waken up immediately after it went to sleep.
-    // To prevent the loss of the clock on interrupt, the GPIO toggle action is moved forward.
-    am_hal_gpio_intdir_toggle(AM_DEVICES_COOPER_CLKREQ_PIN);
-    ns_delay_us(100);
+    // ns_lp_printf("ClkReqIntService\n");
+        ns_delay_us(100);
 
     if (am_devices_cooper_clkreq_read(g_IomDevHdl))
     {
@@ -303,6 +303,7 @@ static void ClkReqIntService(void *pArg)
     {
         am_hal_mcuctrl_control(AM_HAL_MCUCTRL_CONTROL_EXTCLK32M_DISABLE,(void *) &g_amHalMcuctrlArgBLEDefault);
     }
+    am_hal_gpio_intdir_toggle(AM_DEVICES_COOPER_CLKREQ_PIN);
 }
 
 
@@ -383,12 +384,6 @@ HciDrvRadioShutdown(void)
                                   (void *)&IntNum);
 
     am_devices_cooper_term(g_IomDevHdl);
-
-    //
-    // Configure the BLE controller nRST PIN to low level
-    //
-    am_hal_gpio_pinconfig(AM_DEVICES_COOPER_RESET_PIN, am_hal_gpio_pincfg_output);
-    am_hal_gpio_state_write(AM_DEVICES_COOPER_RESET_PIN, AM_HAL_GPIO_OUTPUT_CLEAR);
 }
 
 //*****************************************************************************
@@ -485,6 +480,7 @@ void
 HciDrvHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
     uint32_t ui32ErrorStatus = 0;
+    // ns_lp_printf("HciDrvHandler ID %d event 0x%x\n", g_HciDrvHandleID, event);
     ns_delay_us(300);
 #if ENABLE_BLE_HEARTBEAT
     //
@@ -499,6 +495,7 @@ HciDrvHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
     {
         if (pMsg->event == BLE_HEARTBEAT_EVENT)
         {
+            ns_lp_printf("HciDrvHandler BLE_HEARTBEAT_EVENT\n");
             HciReadLocalVerInfoCmd();
             BLE_HEARTBEAT_START();
 
@@ -517,6 +514,7 @@ HciDrvHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
     {
         if (pMsg->event == BLE_WAKEUP_EVENT)
         {
+            ns_lp_printf("HciDrvHandler BLE_WAKEUP_EVENT\n");
             BLE_WAKEUP_TIMER_STOP();
 
             WsfSetEvent(g_HciDrvHandleID, BLE_TRANSFER_NEEDED_EVENT);
@@ -534,6 +532,7 @@ HciDrvHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         if ( pBle->bWakingUp )
         {
             BLE_WAKEUP_TIMER_STOP();
+            // ns_lp_printf("HciDrvHandler bWakingUp\n");
             pBle->bWakingUp = false;
             /* Send any pending HCI command */
             hciCmdSend(NULL);
@@ -543,12 +542,14 @@ HciDrvHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         }
         else // read
         {
+            // ns_lp_printf("HciDrvHandler read\n");
             //
             // Check to see if we read any bytes over the HCI interface that we haven't
             // already sent to the BLE stack.
             //
             if (g_ui32NumBytes > g_consumed_bytes)
             {
+                ns_lp_printf("HciDrvHandler g_ui32NumBytes > g_consumed_bytes\n");
                 //
                 // If we have any bytes saved, we should send them to the BLE stack
                 // now.
@@ -565,6 +566,7 @@ HciDrvHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
                 if (g_ui32NumBytes && (g_consumed_bytes != g_ui32NumBytes))
                 {
                     WsfSetEvent(g_HciDrvHandleID, BLE_TRANSFER_NEEDED_EVENT);
+                    ns_lp_printf("HciDrvHandler BLE_TRANSFER_NEEDED_EVENT\n");
                     return;
                 }
                 else
@@ -576,13 +578,14 @@ HciDrvHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 
             // Reset
             g_ui32NumBytes = 0;
+            // ns_lp_printf("HciDrvHandler g_ui32NumBytes = 0\n");
             ns_delay_us(300);
             ui32ErrorStatus = am_devices_cooper_blocking_read(g_IomDevHdl, g_pui32ReadBuffer, &g_ui32NumBytes);
             BLE_HEARTBEAT_RESTART();
 
             if (g_ui32NumBytes > AM_DEVICES_COOPER_MAX_RX_PACKET)
             {
-                CRITICAL_PRINT("\nERROR: Trying to receive an HCI packet larger than the hci driver buffer size (needs %d bytes of space).\n",
+                ns_lp_printf("\nERROR: Trying to receive an HCI packet larger than the hci driver buffer size (needs %d bytes of space).\n",
                             g_ui32NumBytes);
                 ERROR_CHECK_VOID(HCI_DRV_RX_PACKET_TOO_LARGE);
             }
@@ -596,7 +599,7 @@ HciDrvHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
                 // so there shouldn't be any physical reason for the read to
                 // fail.
                 //
-                CRITICAL_PRINT("\nHCI READ failed with status %d. Try recording with a logic analyzer to catch the error.\n",
+                ns_lp_printf("\nHCI READ failed with status %d. Try recording with a logic analyzer to catch the error.\n",
                             ui32ErrorStatus);
                 ERROR_RECOVER(ui32ErrorStatus);
             }
@@ -635,9 +638,12 @@ HciDrvHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
                     // Make sure g_ui32NumBytes is not zero.
                     if (g_ui32NumBytes && (g_consumed_bytes != g_ui32NumBytes))
                     {
-
+                        ns_lp_printf("\nERROR: The BLE stack didn't accept all of the bytes we sent it.\n");
                         // need to come back again
                         WsfSetEvent(g_HciDrvHandleID, BLE_TRANSFER_NEEDED_EVENT);
+                    }
+                    else {
+                        // ns_lp_printf("HciDrvHandler g_consumed_bytes = g_ui32NumBytes\n"); 
                     }
                 }
             }
@@ -737,7 +743,7 @@ bool HciVscWriteMem(uint32_t start_addr, eMemAccess_type access_type, uint8_t le
     UINT32_TO_BSTREAM(p, start_addr);
     UINT8_TO_BSTREAM(p, access_type);
     UINT8_TO_BSTREAM(p, length);
-
+    
     memset(wrMemCmd.data, 0x0, MAX_MEM_ACCESS_SIZE);
     memcpy(wrMemCmd.data, data, length);
 
@@ -996,10 +1002,7 @@ uint8_t nvds_data[HCI_VSC_UPDATE_NVDS_CFG_CMD_LENGTH]=
     NVDS_PARAMETER_SLEEP_ALGO_DUR,
     NVDS_PARAMETER_LPCLK_DRIFT,
     NVDS_PARAMETER_EXT_WAKEUP_TIME,
-    NVDS_PARAMETER_OSC_WAKEUP_TIME,
-    NVDS_PARAMETER_RSSI_THRESHOLD,
-    NVDS_PARAMETER_MIN_USED_DATA_CHAN_CENTRAL,
-    NVDS_PARAMETER_LLCP_SWITCH_INSTANT_DELAY
+    NVDS_PARAMETER_OSC_WAKEUP_TIME
 };
 
 void HciVscUpdateNvdsParam(void)
@@ -1036,66 +1039,4 @@ void HciVscGetDtmRssi(void)
 {
     HciVendorSpecificCmd(HCI_VSC_GET_DTM_RSSI_CMD_OPCODE, HCI_VSC_GET_DTM_RSSI_CMD_LENGTH, NULL);
 }
-
-/*************************************************************************************************/
-/*!
- *  \brief  Enable the featue to transmit one single packet in one connection event.
- *          The application may explicitly call this API to enable this feature,which is disabled by default.
- *
- *  \param  con_handle: connection identifier
- *          en        : true to enable transmitting one single packet during the connection interval,
- *                      else disable the feature
- */
-/*************************************************************************************************/
-void HciVsEnableSingleTx(uint16_t con_handle, bool en)
-{
-    hciVsSetPrefSlaveEvtDurCmd_t setSlaveEvtDurCmd = {0};
-
-    uint8_t *p = (uint8_t *)&setSlaveEvtDurCmd;
-
-    UINT16_TO_BSTREAM(p, con_handle);
-    p += 2;
-    UINT8_TO_BSTREAM(p, en);
-
-    HciVendorSpecificCmd(HCI_VS_SET_PREF_SLAVE_EVT_DUR_CMD_OPCODE, HCI_VSC_SET_PREF_SLAVE_EVT_DUR_CMD_LENGTH, (uint8_t *)&setSlaveEvtDurCmd);
-}
-
-/*************************************************************************************************/
-/*!
- *  \brief  To change slave latency for a connection dynamically.
- *
- *  \param  con_handle: connection identifier
- *          latency   : connection latency value to set
- */
-/*************************************************************************************************/
-void HciVsSetSlaveLatency(uint16_t con_handle, uint16_t latency)
-{
-    hciVsSetPrefSlaveLatencyCmd_t setLatencyCmd = {0};
-
-    uint8_t *p = (uint8_t *)&setLatencyCmd;
-
-    UINT16_TO_BSTREAM(p, con_handle);
-    UINT16_TO_BSTREAM(p, latency);
-
-    HciVendorSpecificCmd(HCI_VS_SET_PREF_SLAVE_LATENCY_CMD_OPCODE, HCI_VSC_SET_PREF_SLAVE_LATENCY_CMD_LENGTH, (uint8_t *)&setLatencyCmd);
-}
-
-/*************************************************************************************************/
-/*!
- *  \brief  Get connection event counter for specified connection
- *
- *  \param  con_handle: connection identifier
- */
-/*************************************************************************************************/
-void HciVsGetConEventCounter(uint16_t con_handle)
-{
-    hciVsGetConEvtCntCmd_t getConEvtCntCmd = {0};
-
-    uint8_t *p = (uint8_t *)&getConEvtCntCmd;
-
-    UINT16_TO_BSTREAM(p, con_handle);
-
-    HciVendorSpecificCmd(HCI_DBG_GET_CON_EVT_CNT_CMD_OPCODE, HCI_VSC_GET_CON_EVT_CNT_CMD_LENGTH, (uint8_t *)&getConEvtCntCmd);
-}
-
 

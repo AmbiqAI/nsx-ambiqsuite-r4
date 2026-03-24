@@ -696,7 +696,10 @@ static void dmIsoHciHandler(hciEvt_t *pEvent)
 static void dmIsoHciIsoCback(uint8_t *pPacket)
 {
   uint16_t  handle;
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
   uint16_t  hciLen;
+  #pragma GCC diagnostic pop
   uint8_t   *p = pPacket;
 
   /* parse HCI handle and length */

@@ -47,8 +47,8 @@
 typedef enum
 {
   TUSB_SPEED_FULL = 0,
-  TUSB_SPEED_LOW  = 1,
-  TUSB_SPEED_HIGH = 2,
+  TUSB_SPEED_LOW     ,
+  TUSB_SPEED_HIGH,
   TUSB_SPEED_INVALID = 0xff,
 }tusb_speed_t;
 
@@ -68,15 +68,6 @@ typedef enum
 
   TUSB_DIR_IN_MASK = 0x80
 }tusb_dir_t;
-
-enum
-{
-  TUSB_EPSIZE_BULK_FS = 64,
-  TUSB_EPSIZE_BULK_HS= 512,
-
-  TUSB_EPSIZE_ISO_FS_MAX = 1023,
-  TUSB_EPSIZE_ISO_HS_MAX = 1024,
-};
 
 /// Isochronous End Point Attributes
 typedef enum
@@ -232,16 +223,19 @@ enum {
 
 #define TUSB_DESC_CONFIG_POWER_MA(x)  ((x)/2)
 
-//--------------------------------------------------------------------+
-//
-//--------------------------------------------------------------------+
+/// Device State TODO remove
 typedef enum
 {
-  XFER_RESULT_SUCCESS = 0,
+  TUSB_DEVICE_STATE_UNPLUG = 0  ,
+  TUSB_DEVICE_STATE_CONFIGURED  ,
+  TUSB_DEVICE_STATE_SUSPENDED   ,
+}tusb_device_state_t;
+
+typedef enum
+{
+  XFER_RESULT_SUCCESS,
   XFER_RESULT_FAILED,
   XFER_RESULT_STALLED,
-  XFER_RESULT_TIMEOUT,
-  XFER_RESULT_INVALID
 }xfer_result_t;
 
 enum // TODO remove
@@ -254,6 +248,7 @@ enum
 {
   INTERFACE_INVALID_NUMBER = 0xff
 };
+
 
 typedef enum
 {
@@ -270,15 +265,9 @@ typedef enum
 
 enum
 {
-  CONTROL_STAGE_IDLE,
   CONTROL_STAGE_SETUP,
   CONTROL_STAGE_DATA,
   CONTROL_STAGE_ACK
-};
-
-enum
-{
-  TUSB_INDEX_INVALID_8 = 0xFFu
 };
 
 //--------------------------------------------------------------------+
@@ -460,11 +449,7 @@ typedef struct TU_ATTR_PACKED
   uint8_t  bLength;
   uint8_t  bDescriptorType;
 
-  #ifdef AMBIQ_TUSB_CHANGE
   TU_KEIL_PACKED union {
-  #else
-  union {
-  #endif
     struct TU_ATTR_PACKED {
       uint8_t bitCanDnload             : 1;
       uint8_t bitCanUpload             : 1;
@@ -481,16 +466,11 @@ typedef struct TU_ATTR_PACKED
   uint16_t bcdDFUVersion;
 } tusb_desc_dfu_functional_t;
 
-//--------------------------------------------------------------------+
-//
-//--------------------------------------------------------------------+
-
+/*------------------------------------------------------------------*/
+/* Types
+ *------------------------------------------------------------------*/
 typedef struct TU_ATTR_PACKED{
-#ifdef AMBIQ_TUSB_CHANGE
   TU_KEIL_PACKED union {
-  #else
-  union {
-  #endif
     struct TU_ATTR_PACKED {
       uint8_t recipient :  5; ///< Recipient type tusb_request_recipient_t.
       uint8_t type      :  2; ///< Request type tusb_request_type_t.
@@ -517,72 +497,45 @@ TU_ATTR_BIT_FIELD_ORDER_END
 //--------------------------------------------------------------------+
 
 // Get direction from Endpoint address
-TU_ATTR_ALWAYS_INLINE static inline tusb_dir_t tu_edpt_dir(uint8_t addr)
+static inline tusb_dir_t tu_edpt_dir(uint8_t addr)
 {
   return (addr & TUSB_DIR_IN_MASK) ? TUSB_DIR_IN : TUSB_DIR_OUT;
 }
 
 // Get Endpoint number from address
-TU_ATTR_ALWAYS_INLINE static inline uint8_t tu_edpt_number(uint8_t addr)
+static inline uint8_t tu_edpt_number(uint8_t addr)
 {
   return (uint8_t)(addr & (~TUSB_DIR_IN_MASK));
 }
 
-TU_ATTR_ALWAYS_INLINE static inline uint8_t tu_edpt_addr(uint8_t num, uint8_t dir)
+static inline uint8_t tu_edpt_addr(uint8_t num, uint8_t dir)
 {
   return (uint8_t)(num | (dir ? TUSB_DIR_IN_MASK : 0));
 }
 
-TU_ATTR_ALWAYS_INLINE static inline uint16_t tu_edpt_packet_size(tusb_desc_endpoint_t const* desc_ep)
+static inline uint16_t tu_edpt_packet_size(tusb_desc_endpoint_t const* desc_ep)
 {
   return tu_le16toh(desc_ep->wMaxPacketSize) & TU_GENMASK(10, 0);
 }
 
-#if CFG_TUSB_DEBUG
-TU_ATTR_ALWAYS_INLINE static inline const char *tu_edpt_dir_str(tusb_dir_t dir)
-{
-  tu_static const char *str[] = {"out", "in"};
-  return str[dir];
-}
-
-TU_ATTR_ALWAYS_INLINE static inline const char *tu_edpt_type_str(tusb_xfer_type_t t)
-{
-  tu_static const char *str[] = {"control", "isochronous", "bulk", "interrupt"};
-  return str[t];
-}
-#endif
-
 //--------------------------------------------------------------------+
 // Descriptor helper
 //--------------------------------------------------------------------+
-
-// return next descriptor
-TU_ATTR_ALWAYS_INLINE static inline uint8_t const * tu_desc_next(void const* desc)
+static inline uint8_t const * tu_desc_next(void const* desc)
 {
   uint8_t const* desc8 = (uint8_t const*) desc;
   return desc8 + desc8[DESC_OFFSET_LEN];
 }
 
-// get descriptor type
-TU_ATTR_ALWAYS_INLINE static inline uint8_t tu_desc_type(void const* desc)
+static inline uint8_t tu_desc_type(void const* desc)
 {
   return ((uint8_t const*) desc)[DESC_OFFSET_TYPE];
 }
 
-// get descriptor length
-TU_ATTR_ALWAYS_INLINE static inline uint8_t tu_desc_len(void const* desc)
+static inline uint8_t tu_desc_len(void const* desc)
 {
   return ((uint8_t const*) desc)[DESC_OFFSET_LEN];
 }
-
-// find descriptor that match byte1 (type)
-uint8_t const * tu_desc_find(uint8_t const* desc, uint8_t const* end, uint8_t byte1);
-
-// find descriptor that match byte1 (type) and byte2
-uint8_t const * tu_desc_find2(uint8_t const* desc, uint8_t const* end, uint8_t byte1, uint8_t byte2);
-
-// find descriptor that match byte1 (type) and byte2
-uint8_t const * tu_desc_find3(uint8_t const* desc, uint8_t const* end, uint8_t byte1, uint8_t byte2, uint8_t byte3);
 
 #ifdef __cplusplus
  }

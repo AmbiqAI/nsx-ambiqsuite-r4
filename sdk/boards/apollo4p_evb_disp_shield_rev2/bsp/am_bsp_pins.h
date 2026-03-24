@@ -13,7 +13,7 @@
 
 //*****************************************************************************
 //
-// Copyright (c) 2024, Ambiq Micro, Inc.
+// Copyright (c) 2023, Ambiq Micro, Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 //
-// This is part of revision release_sdk_4_5_0-a1ef3b89f9 of the AmbiqSuite Development Package.
+// This is part of revision release_sdk_4_4_1-7498c7b770 of the AmbiqSuite Development Package.
 //
 //*****************************************************************************
 
@@ -100,70 +100,6 @@ extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_BUTTON0;
 //*****************************************************************************
 #define AM_BSP_GPIO_BUTTON1                 19
 extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_BUTTON1;
-
-//*****************************************************************************
-//
-// ADCSE0 pin: This pin is ADC_SE0  Note: UART3_CTS clock cannot be used simultaneously.
-//
-//*****************************************************************************
-#define AM_BSP_GPIO_ADCSE0                  19
-extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_ADCSE0;
-
-//*****************************************************************************
-//
-// ADCSE1 pin: This pin is ADC_SE1
-//
-//*****************************************************************************
-#define AM_BSP_GPIO_ADCSE1                  18
-extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_ADCSE1;
-
-//*****************************************************************************
-//
-// ADCSE2 pin: This pin is ADC_SE2
-//
-//*****************************************************************************
-#define AM_BSP_GPIO_ADCSE2                  17
-extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_ADCSE2;
-
-//*****************************************************************************
-//
-// ADCSE3 pin: This pin is ADC_SE3
-//
-//*****************************************************************************
-#define AM_BSP_GPIO_ADCSE3                  16
-extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_ADCSE3;
-
-//*****************************************************************************
-//
-// ADCSE4 pin: This pin is ADC_SE4
-//
-//*****************************************************************************
-#define AM_BSP_GPIO_ADCSE4                  15
-extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_ADCSE4;
-
-//*****************************************************************************
-//
-// ADCSE5 pin: This pin is ADC_SE5
-//
-//*****************************************************************************
-#define AM_BSP_GPIO_ADCSE5                  14
-extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_ADCSE5;
-
-//*****************************************************************************
-//
-// ADCSE6 pin: This pin is ADC_SE6
-//
-//*****************************************************************************
-#define AM_BSP_GPIO_ADCSE6                  13
-extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_ADCSE6;
-
-//*****************************************************************************
-//
-// ADCSE7 pin: This pin is ADC_SE7
-//
-//*****************************************************************************
-#define AM_BSP_GPIO_ADCSE7                  12
-extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_ADCSE7;
 
 //*****************************************************************************
 //
@@ -1424,38 +1360,6 @@ extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_SDIO_CLK;
 //*****************************************************************************
 #define AM_BSP_GPIO_SDIO_RST                96
 extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_SDIO_RST;
-
-//*****************************************************************************
-//
-// SD_CD pin: SD Card using GPIO for card detection.
-//
-//*****************************************************************************
-#define AM_BSP_GPIO_SD_CD                   75
-extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_SD_CD;
-
-//*****************************************************************************
-//
-// SD_WP pin: SD Card using GPIO for write protection.
-//
-//*****************************************************************************
-#define AM_BSP_GPIO_SD_WP                   74
-extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_SD_WP;
-
-//*****************************************************************************
-//
-// SD_LEVEL_SHIFT_SEL pin: SD Card using GPIO for switching supply voltage.
-//
-//*****************************************************************************
-#define AM_BSP_GPIO_SD_LEVEL_SHIFT_SEL      76
-extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_SD_LEVEL_SHIFT_SEL;
-
-//*****************************************************************************
-//
-// SD_POWER_CTRL pin: SD Card using GPIO for power cycle or power on/off.
-//
-//*****************************************************************************
-#define AM_BSP_GPIO_SD_POWER_CTRL           48
-extern am_hal_gpio_pincfg_t g_AM_BSP_GPIO_SD_POWER_CTRL;
 
 //*****************************************************************************
 //

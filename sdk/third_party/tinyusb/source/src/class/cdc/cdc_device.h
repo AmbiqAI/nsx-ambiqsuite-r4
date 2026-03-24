@@ -1,4 +1,4 @@
-/*
+/* 
  * The MIT License (MIT)
  *
  * Copyright (c) 2019 Ha Thach (tinyusb.org)
@@ -27,6 +27,7 @@
 #ifndef _TUSB_CDC_DEVICE_H_
 #define _TUSB_CDC_DEVICE_H_
 
+#include "common/tusb_common.h"
 #include "cdc.h"
 
 //--------------------------------------------------------------------+
@@ -39,20 +40,6 @@
 
 #ifndef CFG_TUD_CDC_EP_BUFSIZE
   #define CFG_TUD_CDC_EP_BUFSIZE    (TUD_OPT_HIGH_SPEED ? 512 : 64)
-#endif
-
-#ifdef AM_CDC_USE_APP_BUF
-typedef enum
-{
-  TUD_APP_BUF_STATE_INVALID = 0,
-  TUD_APP_BUF_STATE_ASSIGNED,     // App buffer assigned
-  TUD_APP_BUF_STATE_BUSY,         // Buffer busy waiting or transmitting
-  TUD_APP_BUF_STATE_RX_READY,     // rx buffer data is ready for processing,
-                                  // app_rx_buf_len is updated to rx length
-  TUD_APP_BUF_STATE_TX_DONE,      // tx buffer data has done transmitted
-  TUD_APP_BUF_STATE_BUF_RESET,    // Buffer has been discarded due to event
-                                  // such as Bus Reset, Configuration Set
-}tud_app_buf_state_t;
 #endif
 
 #ifdef __cplusplus
@@ -78,22 +65,6 @@ uint8_t  tud_cdc_n_get_line_state  (uint8_t itf);
 // Get current line encoding: bit rate, stop bits parity etc ..
 void     tud_cdc_n_get_line_coding (uint8_t itf, cdc_line_coding_t* coding);
 
-#ifdef AM_CDC_USE_APP_BUF
-// Assign CDC RX buffer to be used to receive CDC data from host
-bool tud_cdc_n_rx_buf_assign( uint8_t itf, void* buf, uint32_t size );
-
-// Get current CDC rx buffer state for the buffer assigned
-tud_app_buf_state_t tud_cdc_n_rx_buf_state_get( uint8_t itf );
-
-// Get numbers of bytes received into the buffer assigned from host
-uint32_t tud_cdc_n_rx_buf_recv_count_get( uint8_t itf );
-
-// Assign CDC TX buffer to be sent to host.
-bool tud_cdc_n_tx_buf_assign_send(uint8_t itf, void const* buffer, uint32_t bufsize);
-
-// Get current CDC tx buffer state for the buffer assigned
-tud_app_buf_state_t tud_cdc_n_tx_buf_state_get( uint8_t itf );
-#else
 // Set special character that will trigger tud_cdc_rx_wanted_cb() callback on receiving
 void     tud_cdc_n_set_wanted_char (uint8_t itf, char wanted);
 
@@ -110,7 +81,7 @@ int32_t  tud_cdc_n_read_char       (uint8_t itf);
 // Clear the received FIFO
 void     tud_cdc_n_read_flush      (uint8_t itf);
 
-// Get a byte from FIFO without removing it
+// Get a byte from FIFO at the specified position without removing it
 bool     tud_cdc_n_peek            (uint8_t itf, uint8_t* ui8);
 
 // Write bytes to TX FIFO, data may remain in the FIFO for a while
@@ -132,7 +103,6 @@ uint32_t tud_cdc_n_write_available (uint8_t itf);
 
 // Clear the transmit FIFO
 bool tud_cdc_n_write_clear (uint8_t itf);
-#endif
 
 //--------------------------------------------------------------------+
 // Application API (Single Port)
@@ -140,17 +110,8 @@ bool tud_cdc_n_write_clear (uint8_t itf);
 static inline bool     tud_cdc_connected       (void);
 static inline uint8_t  tud_cdc_get_line_state  (void);
 static inline void     tud_cdc_get_line_coding (cdc_line_coding_t* coding);
-#ifndef AM_CDC_USE_APP_BUF
 static inline void     tud_cdc_set_wanted_char (char wanted);
-#endif
 
-#ifdef AM_CDC_USE_APP_BUF
-static inline tud_app_buf_state_t tud_cdc_tx_buf_state_get( void );
-static inline bool                tud_cdc_tx_buf_assign_send (void const* buffer, uint32_t bufsize);
-static inline uint32_t            tud_cdc_rx_buf_recv_count_get (void);
-static inline tud_app_buf_state_t tud_cdc_rx_buf_state_get (void);
-static inline bool                tud_cdc_rx_buf_assign (void* buffer, uint32_t bufsize);
-#else
 static inline uint32_t tud_cdc_available       (void);
 static inline int32_t  tud_cdc_read_char       (void);
 static inline uint32_t tud_cdc_read            (void* buffer, uint32_t bufsize);
@@ -163,7 +124,6 @@ static inline uint32_t tud_cdc_write_str       (char const* str);
 static inline uint32_t tud_cdc_write_flush     (void);
 static inline uint32_t tud_cdc_write_available (void);
 static inline bool     tud_cdc_write_clear     (void);
-#endif
 
 //--------------------------------------------------------------------+
 // Application Callback API (weak is optional)
@@ -175,7 +135,7 @@ TU_ATTR_WEAK void tud_cdc_rx_cb(uint8_t itf);
 // Invoked when received `wanted_char`
 TU_ATTR_WEAK void tud_cdc_rx_wanted_cb(uint8_t itf, char wanted_char);
 
-// Invoked when a TX is complete and therefore space becomes available in TX buffer
+// Invoked when space becomes available in TX buffer
 TU_ATTR_WEAK void tud_cdc_tx_complete_cb(uint8_t itf);
 
 // Invoked when line state DTR & RTS are changed via SET_CONTROL_LINE_STATE
@@ -190,7 +150,6 @@ TU_ATTR_WEAK void tud_cdc_send_break_cb(uint8_t itf, uint16_t duration_ms);
 //--------------------------------------------------------------------+
 // Inline Functions
 //--------------------------------------------------------------------+
-#ifndef AM_CDC_USE_APP_BUF
 static inline int32_t tud_cdc_n_read_char (uint8_t itf)
 {
   uint8_t ch;
@@ -206,7 +165,6 @@ static inline uint32_t tud_cdc_n_write_str (uint8_t itf, char const* str)
 {
   return tud_cdc_n_write(itf, str, strlen(str));
 }
-#endif
 
 static inline bool tud_cdc_connected (void)
 {
@@ -223,40 +181,11 @@ static inline void tud_cdc_get_line_coding (cdc_line_coding_t* coding)
   tud_cdc_n_get_line_coding(0, coding);
 }
 
-#ifndef AM_CDC_USE_APP_BUF
 static inline void tud_cdc_set_wanted_char (char wanted)
 {
   tud_cdc_n_set_wanted_char(0, wanted);
 }
-#endif
 
-#ifdef AM_CDC_USE_APP_BUF
-static inline bool tud_cdc_rx_buf_assign (void* buffer, uint32_t bufsize)
-{
-  return tud_cdc_n_rx_buf_assign(0, buffer, bufsize);
-}
-
-static inline tud_app_buf_state_t tud_cdc_rx_buf_state_get (void)
-{
-  return tud_cdc_n_rx_buf_state_get(0);
-}
-
-static inline uint32_t tud_cdc_rx_buf_recv_count_get (void)
-{
-  return tud_cdc_n_rx_buf_recv_count_get(0);
-}
-
-static inline bool tud_cdc_tx_buf_assign_send (void const* buffer, uint32_t bufsize)
-{
-  return tud_cdc_n_tx_buf_assign_send(0, buffer, bufsize);
-}
-
-static inline tud_app_buf_state_t tud_cdc_tx_buf_state_get( void )
-{
-  return tud_cdc_n_tx_buf_state_get(0);
-}
-
-#else
 static inline uint32_t tud_cdc_available (void)
 {
   return tud_cdc_n_available(0);
@@ -311,7 +240,6 @@ static inline bool tud_cdc_write_clear(void)
 {
   return tud_cdc_n_write_clear(0);
 }
-#endif
 
 /** @} */
 /** @} */

@@ -148,6 +148,7 @@ uint64_t hciLeSupFeatCfg =
 
 /* Control block */
 hciCoreCb_t hciCoreCb;
+
 /*************************************************************************************************/
 /*!
  *  \fn     hciCoreConnAlloc
@@ -456,7 +457,7 @@ bool_t hciCoreTxAclStart(hciCoreConn_t *pConn, uint16_t len, uint8_t *pData)
 
   hciLen = HciGetBufSize();
 
-  HCI_TRACE_INFO1("hciCoreTxAclStart len=%u", len);
+  // HCI_TRACE_INFO1("hciCoreTxAclStart len=%u", len);
 
   /* if acl len > controller acl buf len */
   if (len > hciLen)
@@ -552,13 +553,8 @@ bool_t hciCoreTxAclContinue(hciCoreConn_t *pConn)
           pConn->pNextTxFrag += aclLen;
         }
         hciCoreTxAclComplete(pConn, pConn->pNextTxFrag);
-
-        return TRUE;
       }
-      else
-      {
-        return FALSE;
-      }
+      return TRUE;
     }
   }
 
@@ -999,12 +995,11 @@ void HciSendAclData(uint8_t *pData)
   /* look up connection structure */
   if ((pConn = hciCoreConnByHandle(handle)) != NULL)
   {
-      /* queue data - message handler ID 'handerId' not used */
-      WsfMsgEnq(&hciCoreCb.aclQueue, 0, pData);
+    /* queue data - message handler ID 'handerId' not used */
+    WsfMsgEnq(&hciCoreCb.aclQueue, 0, pData);
 
     // HCI_TRACE_WARN1("enq acl pkt %x", pData);
     ns_delay_us(500);
-
 
     /* if queue not empty and buffers available */
     if ((WsfQueueCount(&hciCoreCb.aclQueue) == 1) && hciCoreCb.availBufs > 0)

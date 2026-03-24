@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-    <fileVersion>4</fileVersion>
+    <fileVersion>3</fileVersion>
     <configuration>
         <name>Debug</name>
         <toolchain>
@@ -11,13 +11,9 @@
             <name>General</name>
             <archiveVersion>3</archiveVersion>
             <data>
-                <version>36</version>
+                <version>28</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
-                <option>
-                    <name>BrowseInfoPath</name>
-                    <state>Debug\BrowseInfo</state>
-                </option>
                 <option>
                     <name>ExePath</name>
                     <state>bin</state>
@@ -73,6 +69,14 @@
                     <state></state>
                 </option>
                 <option>
+                    <name>GeneralEnableMisra</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>GeneralMisraVerbose</name>
+                    <state>0</state>
+                </option>
+                <option>
                     <name>OGChipSelectEditMenu</name>
                     <state>AMAP42KL-KBR	AmbiqMicro AMAP42KL-KBR</state>
                 </option>
@@ -93,12 +97,26 @@
                     <state>0</state>
                 </option>
                 <option>
+                    <name>GeneralMisraRules98</name>
+                    <version>0</version>
+                    <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+                </option>
+                <option>
+                    <name>GeneralMisraVer</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>GeneralMisraRules04</name>
+                    <version>0</version>
+                    <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+                </option>
+                <option>
                     <name>RTConfigPath2</name>
                     <state></state>
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
-                    <version>33</version>
+                    <version>25</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -115,7 +133,7 @@
                 </option>
                 <option>
                     <name>CoreVariant</name>
-                    <version>33</version>
+                    <version>25</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -138,7 +156,7 @@
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
-                    <version>33</version>
+                    <version>25</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -178,59 +196,21 @@
                     <name>GenLocaleDisplayOnly</name>
                     <state></state>
                 </option>
-                <option>
-                    <name>DSPExtension</name>
-                    <state>1</state>
-                </option>
-                <option>
-                    <name>TrustZone</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>TrustZoneModes</name>
-                    <version>0</version>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>OGAarch64Abi</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>OG_32_64Device</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>BuildFilesPath</name>
-                    <state>Debug</state>
-                </option>
-                <option>
-                    <name>PointerAuthentication</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>FPU64</name>
-                    <state>1</state>
-                </option>
-                <option>
-                    <name>OG_32_64DeviceCoreSlave</name>
-                    <version>33</version>
-                    <state>39</state>
-                </option>
             </data>
         </settings>
         <settings>
             <name>ICCARM</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>38</version>
+                <version>34</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
                     <state>iar</state>
+          <state>NEMA_PLATFORM=apollo4l_nemagfx</state>
           <state>AM_PACKAGE_BGA</state>
           <state>AM_PART_APOLLO4L</state>
-          <state>NEMA_PLATFORM=apollo4l_nemagfx</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -350,18 +330,22 @@
                     <state></state>
                 </option>
                 <option>
+                    <name>CompilerMisraOverride</name>
+                    <state>0</state>
+                </option>
+                <option>
                     <name>CCIncludePath2</name>
-          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\NemaGFX</state>
-          <state>$PROJ_DIR$\..\..\..\..\CMSIS\AmbiqMicro\Include</state>
-          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\config\apollo4l_nemagfx</state>
-          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\include\tsi\common</state>
-          <state>$PROJ_DIR$\..\..\..\..\devices</state>
-          <state>$PROJ_DIR$\..\..\..\..\CMSIS\ARM\Include</state>
           <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\common\mem</state>
-          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\include\tsi\NemaGFX</state>
-          <state>$PROJ_DIR$\..\..\..\..\utils</state>
-          <state>$PROJ_DIR$\..\..\..\..\mcu\apollo4l</state>
+          <state>$PROJ_DIR$\..\..\..\..\CMSIS\AmbiqMicro\Include</state>
           <state>$PROJ_DIR$\..\..\..\..\mcu\apollo4l\hal</state>
+          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\include\tsi\common</state>
+          <state>$PROJ_DIR$\..\..\..\..\CMSIS\ARM\Include</state>
+          <state>$PROJ_DIR$\..\..\..\..\mcu\apollo4l</state>
+          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\NemaGFX</state>
+          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\include\tsi\NemaGFX</state>
+          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\config\apollo4l_nemagfx</state>
+          <state>$PROJ_DIR$\..\..\..\..\utils</state>
+          <state>$PROJ_DIR$\..\..\..\..\devices</state>
           <state>$PROJ_DIR$\..\..\..\..\mcu\apollo4l\hal\mcu</state>
                 </option>
                 <option>
@@ -388,6 +372,16 @@
                 <option>
                     <name>CCOptLevelSlave</name>
                     <state>3</state>
+                </option>
+                <option>
+                    <name>CompilerMisraRules98</name>
+                    <version>0</version>
+                    <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+                </option>
+                <option>
+                    <name>CompilerMisraRules04</name>
+                    <version>0</version>
+                    <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
                 </option>
                 <option>
                     <name>CCPosIndRopi</name>
@@ -470,29 +464,13 @@
                     <name>IccRTTI2</name>
                     <state>0</state>
                 </option>
-                <option>
-                    <name>OICompilerExtraOption</name>
-                    <state>1</state>
-                </option>
-                <option>
-                    <name>CCStackProtection</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>CCPointerAutentiction</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>CCBranchTargetIdentification</name>
-                    <state>0</state>
-                </option>
             </data>
         </settings>
         <settings>
             <name>AARM</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>12</version>
+                <version>10</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -634,17 +612,17 @@
                 </option>
                 <option>
                     <name>AUserIncludes</name>
-          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\NemaGFX</state>
-          <state>$PROJ_DIR$\..\..\..\..\CMSIS\AmbiqMicro\Include</state>
-          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\config\apollo4l_nemagfx</state>
-          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\include\tsi\common</state>
-          <state>$PROJ_DIR$\..\..\..\..\devices</state>
-          <state>$PROJ_DIR$\..\..\..\..\CMSIS\ARM\Include</state>
           <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\common\mem</state>
-          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\include\tsi\NemaGFX</state>
-          <state>$PROJ_DIR$\..\..\..\..\utils</state>
-          <state>$PROJ_DIR$\..\..\..\..\mcu\apollo4l</state>
+          <state>$PROJ_DIR$\..\..\..\..\CMSIS\AmbiqMicro\Include</state>
           <state>$PROJ_DIR$\..\..\..\..\mcu\apollo4l\hal</state>
+          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\include\tsi\common</state>
+          <state>$PROJ_DIR$\..\..\..\..\CMSIS\ARM\Include</state>
+          <state>$PROJ_DIR$\..\..\..\..\mcu\apollo4l</state>
+          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\NemaGFX</state>
+          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\include\tsi\NemaGFX</state>
+          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\config\apollo4l_nemagfx</state>
+          <state>$PROJ_DIR$\..\..\..\..\utils</state>
+          <state>$PROJ_DIR$\..\..\..\..\devices</state>
           <state>$PROJ_DIR$\..\..\..\..\mcu\apollo4l\hal\mcu</state>
                 </option>
                 <option>
@@ -658,14 +636,6 @@
                 <option>
                     <name>AsmNoLiteralPool</name>
                     <state>0</state>
-                </option>
-                <option>
-                    <name>PreInclude</name>
-                    <state></state>
-                </option>
-                <option>
-                    <name>A_32_64Device</name>
-                    <state>1</state>
                 </option>
             </data>
         </settings>
@@ -706,19 +676,35 @@
                 <extensions></extensions>
                 <cmdline></cmdline>
                 <hasPrio>0</hasPrio>
-                <buildSequence>inputOutputBased</buildSequence>
+            </data>
+        </settings>
+        <settings>
+            <name>BICOMP</name>
+            <archiveVersion>0</archiveVersion>
+            <data />
+        </settings>
+        <settings>
+            <name>BUILDACTION</name>
+            <archiveVersion>1</archiveVersion>
+            <data>
+                <prebuild></prebuild>
+                <postbuild></postbuild>
             </data>
         </settings>
         <settings>
             <name>ILINK</name>
             <archiveVersion>0</archiveVersion>
             <data>
-                <version>27</version>
+                <version>20</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
                     <name>IlinkLibIOConfig</name>
                     <state>1</state>
+                </option>
+                <option>
+                    <name>XLinkMisraHandler</name>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>IlinkInputFileSlave</name>
@@ -1021,66 +1007,6 @@
                     <name>IlinkLocaleSelect</name>
                     <state>1</state>
                 </option>
-                <option>
-                    <name>IlinkTrustzoneImportLibraryOut</name>
-                    <state>###Unitialized###</state>
-                </option>
-                <option>
-                    <name>OILinkExtraOption</name>
-                    <state>1</state>
-                </option>
-                <option>
-                    <name>IlinkRawBinaryFile2</name>
-                    <state></state>
-                </option>
-                <option>
-                    <name>IlinkRawBinarySymbol2</name>
-                    <state></state>
-                </option>
-                <option>
-                    <name>IlinkRawBinarySegment2</name>
-                    <state></state>
-                </option>
-                <option>
-                    <name>IlinkRawBinaryAlign2</name>
-                    <state></state>
-                </option>
-                <option>
-                    <name>IlinkLogCrtRoutineSelection</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>IlinkLogFragmentInfo</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>IlinkLogInlining</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>IlinkLogMerging</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>IlinkDemangle</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>IlinkWrapperFileEnable</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>IlinkWrapperFile</name>
-                    <state></state>
-                </option>
-                <option>
-                    <name>IlinkProcessor</name>
-                    <state>1</state>
-                </option>
-                <option>
-                    <name>IlinkFpuProcessor</name>
-                    <state>1</state>
-                </option>
             </data>
         </settings>
         <settings>
@@ -1105,8 +1031,8 @@
             </data>
         </settings>
         <settings>
-            <name>BUILDACTION</name>
-            <archiveVersion>2</archiveVersion>
+            <name>BILINK</name>
+            <archiveVersion>0</archiveVersion>
             <data />
         </settings>
     </configuration>
@@ -1120,13 +1046,9 @@
             <name>General</name>
             <archiveVersion>3</archiveVersion>
             <data>
-                <version>36</version>
+                <version>28</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
-                <option>
-                    <name>BrowseInfoPath</name>
-                    <state>Release\BrowseInfo</state>
-                </option>
                 <option>
                     <name>ExePath</name>
                     <state>bin</state>
@@ -1182,6 +1104,14 @@
                     <state></state>
                 </option>
                 <option>
+                    <name>GeneralEnableMisra</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>GeneralMisraVerbose</name>
+                    <state>0</state>
+                </option>
+                <option>
                     <name>OGChipSelectEditMenu</name>
                     <state>AMAP42KL-KBR AmbiqMicro AMAP42KL-KBR</state>
                 </option>
@@ -1202,12 +1132,26 @@
                     <state>0</state>
                 </option>
                 <option>
+                    <name>GeneralMisraRules98</name>
+                    <version>0</version>
+                    <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+                </option>
+                <option>
+                    <name>GeneralMisraVer</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>GeneralMisraRules04</name>
+                    <version>0</version>
+                    <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+                </option>
+                <option>
                     <name>RTConfigPath2</name>
                     <state>$TOOLKIT_DIR$\INC\c\DLib_Config_Normal.h</state>
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
-                    <version>33</version>
+                    <version>25</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -1224,8 +1168,8 @@
                 </option>
                 <option>
                     <name>CoreVariant</name>
-                    <version>33</version>
-                    <state>0</state>
+                    <version>25</version>
+                    <state>39</state>
                 </option>
                 <option>
                     <name>GFPUDeviceSlave</name>
@@ -1247,7 +1191,7 @@
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
-                    <version>33</version>
+                    <version>25</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -1287,59 +1231,21 @@
                     <name>GenLocaleDisplayOnly</name>
                     <state></state>
                 </option>
-                <option>
-                    <name>DSPExtension</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>TrustZone</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>TrustZoneModes</name>
-                    <version>0</version>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>OGAarch64Abi</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>OG_32_64Device</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>BuildFilesPath</name>
-                    <state>Release</state>
-                </option>
-                <option>
-                    <name>PointerAuthentication</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>FPU64</name>
-                    <state>1</state>
-                </option>
-                <option>
-                    <name>OG_32_64DeviceCoreSlave</name>
-                    <version>33</version>
-                    <state>0</state>
-                </option>
             </data>
         </settings>
         <settings>
             <name>ICCARM</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>38</version>
+                <version>34</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
                     <name>CCDefines</name>
                     <state>iar</state>
+          <state>NEMA_PLATFORM=apollo4l_nemagfx</state>
           <state>AM_PACKAGE_BGA</state>
           <state>AM_PART_APOLLO4L</state>
-          <state>NEMA_PLATFORM=apollo4l_nemagfx</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -1459,18 +1365,22 @@
                     <state></state>
                 </option>
                 <option>
+                    <name>CompilerMisraOverride</name>
+                    <state>0</state>
+                </option>
+                <option>
                     <name>CCIncludePath2</name>
-          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\NemaGFX</state>
-          <state>$PROJ_DIR$\..\..\..\..\CMSIS\AmbiqMicro\Include</state>
-          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\config\apollo4l_nemagfx</state>
-          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\include\tsi\common</state>
-          <state>$PROJ_DIR$\..\..\..\..\devices</state>
-          <state>$PROJ_DIR$\..\..\..\..\CMSIS\ARM\Include</state>
           <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\common\mem</state>
-          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\include\tsi\NemaGFX</state>
-          <state>$PROJ_DIR$\..\..\..\..\utils</state>
-          <state>$PROJ_DIR$\..\..\..\..\mcu\apollo4l</state>
+          <state>$PROJ_DIR$\..\..\..\..\CMSIS\AmbiqMicro\Include</state>
           <state>$PROJ_DIR$\..\..\..\..\mcu\apollo4l\hal</state>
+          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\include\tsi\common</state>
+          <state>$PROJ_DIR$\..\..\..\..\CMSIS\ARM\Include</state>
+          <state>$PROJ_DIR$\..\..\..\..\mcu\apollo4l</state>
+          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\NemaGFX</state>
+          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\NemaGFX_SDK\include\tsi\NemaGFX</state>
+          <state>$PROJ_DIR$\..\..\..\..\third_party\ThinkSi\config\apollo4l_nemagfx</state>
+          <state>$PROJ_DIR$\..\..\..\..\utils</state>
+          <state>$PROJ_DIR$\..\..\..\..\devices</state>
           <state>$PROJ_DIR$\..\..\..\..\mcu\apollo4l\hal\mcu</state>
                 </option>
                 <option>
@@ -1497,6 +1407,16 @@
                 <option>
                     <name>CCOptLevelSlave</name>
                     <state>3</state>
+                </option>
+                <option>
+                    <name>CompilerMisraRules98</name>
+                    <version>0</version>
+                    <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+                </option>
+                <option>
+                    <name>CompilerMisraRules04</name>
+                    <version>0</version>
+                    <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
                 </option>
                 <option>
                     <name>CCPosIndRopi</name>
@@ -1579,29 +1499,13 @@
                     <name>IccRTTI2</name>
                     <state>0</state>
                 </option>
-                <option>
-                    <name>OICompilerExtraOption</name>
-                    <state>1</state>
-                </option>
-                <option>
-                    <name>CCStackProtection</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>CCPointerAutentiction</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>CCBranchTargetIdentification</name>
-                    <state>0</state>
-                </option>
             </data>
         </settings>
         <settings>
             <name>AARM</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>12</version>
+                <version>10</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
@@ -1757,14 +1661,6 @@
                     <name>AsmNoLiteralPool</name>
                     <state>0</state>
                 </option>
-                <option>
-                    <name>PreInclude</name>
-                    <state></state>
-                </option>
-                <option>
-                    <name>A_32_64Device</name>
-                    <state>1</state>
-                </option>
             </data>
         </settings>
         <settings>
@@ -1804,19 +1700,35 @@
                 <extensions></extensions>
                 <cmdline></cmdline>
                 <hasPrio>0</hasPrio>
-                <buildSequence>inputOutputBased</buildSequence>
+            </data>
+        </settings>
+        <settings>
+            <name>BICOMP</name>
+            <archiveVersion>0</archiveVersion>
+            <data />
+        </settings>
+        <settings>
+            <name>BUILDACTION</name>
+            <archiveVersion>1</archiveVersion>
+            <data>
+                <prebuild></prebuild>
+                <postbuild></postbuild>
             </data>
         </settings>
         <settings>
             <name>ILINK</name>
             <archiveVersion>0</archiveVersion>
             <data>
-                <version>27</version>
+                <version>20</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
                     <name>IlinkLibIOConfig</name>
                     <state>1</state>
+                </option>
+                <option>
+                    <name>XLinkMisraHandler</name>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>IlinkInputFileSlave</name>
@@ -2119,66 +2031,6 @@
                     <name>IlinkLocaleSelect</name>
                     <state>1</state>
                 </option>
-                <option>
-                    <name>IlinkTrustzoneImportLibraryOut</name>
-                    <state>###Unitialized###</state>
-                </option>
-                <option>
-                    <name>OILinkExtraOption</name>
-                    <state>1</state>
-                </option>
-                <option>
-                    <name>IlinkRawBinaryFile2</name>
-                    <state></state>
-                </option>
-                <option>
-                    <name>IlinkRawBinarySymbol2</name>
-                    <state></state>
-                </option>
-                <option>
-                    <name>IlinkRawBinarySegment2</name>
-                    <state></state>
-                </option>
-                <option>
-                    <name>IlinkRawBinaryAlign2</name>
-                    <state></state>
-                </option>
-                <option>
-                    <name>IlinkLogCrtRoutineSelection</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>IlinkLogFragmentInfo</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>IlinkLogInlining</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>IlinkLogMerging</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>IlinkDemangle</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>IlinkWrapperFileEnable</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>IlinkWrapperFile</name>
-                    <state></state>
-                </option>
-                <option>
-                    <name>IlinkProcessor</name>
-                    <state>1</state>
-                </option>
-                <option>
-                    <name>IlinkFpuProcessor</name>
-                    <state>1</state>
-                </option>
             </data>
         </settings>
         <settings>
@@ -2203,8 +2055,8 @@
             </data>
         </settings>
         <settings>
-            <name>BUILDACTION</name>
-            <archiveVersion>2</archiveVersion>
+            <name>BILINK</name>
+            <archiveVersion>0</archiveVersion>
             <data />
         </settings>
     </configuration>
@@ -2215,5 +2067,4 @@
     <name>$PROJ_DIR$\..\am_bsp_pins.c</name>
   </file>
 </project>
-
 

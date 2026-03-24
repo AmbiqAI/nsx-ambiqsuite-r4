@@ -47,7 +47,7 @@
 # *****************************************************************************
 
 # *****************************************************************************
-# Copyright (c) 2024, Ambiq Micro, Inc.
+# Copyright (c) 2023, Ambiq Micro, Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -79,7 +79,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-# This is part of revision release_sdk_4_5_0-a1ef3b89f9 of the AmbiqSuite Development Package.
+# This is part of revision release_sdk_4_4_1-7498c7b770 of the AmbiqSuite Development Package.
 #
 # *****************************************************************************
 
@@ -265,57 +265,6 @@ pin
     pullup          = 100K
     GPinput         = ENABLE
     intdir          = HI2LO
-
-# *****************************************************************************
-#  ADC pins.
-# *****************************************************************************
-pin
-    name            = ADCSE0
-    desc            = This pin is ADC_SE0  Note: UART3_CTS clock cannot be used simultaneously.
-    pinnum          = 19
-    func_sel        = ADCSE0
-
-pin
-    name            = ADCSE1
-    desc            = This pin is ADC_SE1
-    pinnum          = 18
-    func_sel        = ADCSE1
-
-pin
-    name            = ADCSE2
-    desc            = This pin is ADC_SE2
-    pinnum          = 17
-    func_sel        = ADCSE2
-
-pin
-    name            = ADCSE3
-    desc            = This pin is ADC_SE3
-    pinnum          = 16
-    func_sel        = ADCSE3
-
-pin
-    name            = ADCSE4
-    desc            = This pin is ADC_SE4
-    pinnum          = 15
-    func_sel        = ADCSE4
-
-pin
-    name            = ADCSE5
-    desc            = This pin is ADC_SE5
-    pinnum          = 14
-    func_sel        = ADCSE5
-
-pin
-    name            = ADCSE6
-    desc            = This pin is ADC_SE6
-    pinnum          = 13
-    func_sel        = ADCSE6
-
-pin
-    name            = ADCSE7
-    desc            = This pin is ADC_SE7
-    pinnum          = 12
-    func_sel        = ADCSE7
 
 # *****************************************************************************
 #  COM UART pins (UART0 used by J-Link).
@@ -1683,7 +1632,7 @@ pin
     desc            = NOR Flash Reset.
     pinnum          = 102
     func_sel        = GPIO
-    drvstrength     = 0P5X
+    drvstrength     = 1P0X
     GPOutcfg        = PUSHPULL
 
 # *****************************************************************************
@@ -1702,7 +1651,6 @@ pin
     desc            = eMMC NAND Flash I/F using SDIO data 1.
     pinnum          = 85
     func_sel        = SDIF_DAT1
-    pullup          = 12K
     drvstrength     = 1P0X
 
 pin
@@ -1710,7 +1658,6 @@ pin
     desc            = eMMC NAND Flash I/F using SDIO data 2.
     pinnum          = 86
     func_sel        = SDIF_DAT2
-    pullup          = 12K
     drvstrength     = 1P0X
 
 pin
@@ -1718,7 +1665,6 @@ pin
     desc            = eMMC NAND Flash I/F using SDIO data 3.
     pinnum          = 87
     func_sel        = SDIF_DAT3
-    pullup          = 12K
     drvstrength     = 1P0X
 
 pin
@@ -1772,30 +1718,6 @@ pin
     func_sel        = GPIO
     GPOutcfg        = PUSHPULL
 
-pin
-    name            = SD_CD
-    desc            = SD Card using GPIO for card detection.
-    pinnum          = 75
-    func_sel        = GPIO
-
-pin
-    name            = SD_WP
-    desc            = SD Card using GPIO for write protection.
-    pinnum          = 74
-    func_sel        = GPIO
-
-pin
-    name            = SD_LEVEL_SHIFT_SEL
-    desc            = SD Card using GPIO for switching supply voltage.
-    pinnum          = 76
-    func_sel        = GPIO
-
-pin
-    name            = SD_POWER_CTRL
-    desc            = SD Card using GPIO for power cycle or power on/off.
-    pinnum          = 48
-    func_sel        = GPIO
-
 # *****************************************************************************
 #  DC SPI pins to Display Shield's display headers (J10, J12).
 # *****************************************************************************
@@ -1848,7 +1770,7 @@ pin
     desc            = Display SPI Reset.
     pinnum          = 29
     func_sel        = GPIO
-    drvstrength     = 0P5X
+    drvstrength     = 0P1X
 
 pin
     name            = DISP_SPI_TE
@@ -1895,14 +1817,14 @@ pin
     desc            = Display DSPI Reset.
     pinnum          = 29
     func_sel        = GPIO
-    drvstrength     = 0P5X
+    drvstrength     = 0P1X
 
 pin
     name            = DISP_DSPI_TE
     desc            = Display DSPI TE.
     pinnum          = 33
     func_sel        = DISP_TE
-    drvstrength     = 0P5X
+    drvstrength     = 0P1X
 
 # *****************************************************************************
 #  DC QSPI pins to Display Shield's display headers (J10, J12).

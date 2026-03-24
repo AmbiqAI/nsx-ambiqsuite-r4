@@ -41,6 +41,16 @@
 /** \defgroup ClassDriver_CDC_Common Common Definitions
  *  @{ */
 
+// TODO remove
+/// CDC Pipe ID, used to indicate which pipe the API is addressing to (Notification, Out, In)
+typedef enum
+{
+  CDC_PIPE_NOTIFICATION , ///< Notification pipe
+  CDC_PIPE_DATA_IN      , ///< Data in pipe
+  CDC_PIPE_DATA_OUT     , ///< Data out pipe
+  CDC_PIPE_ERROR        , ///< Invalid Pipe ID
+}cdc_pipeid_t;
+
 //--------------------------------------------------------------------+
 // CDC Communication Interface Class
 //--------------------------------------------------------------------+
@@ -182,32 +192,8 @@ typedef enum
   CDC_REQUEST_MDLM_SEMANTIC_MODEL                          = 0x60,
 }cdc_management_request_t;
 
-enum {
-  CDC_CONTROL_LINE_STATE_DTR = 0x01,
-  CDC_CONTROL_LINE_STATE_RTS = 0x02,
-};
-
-enum {
-  CDC_LINE_CODING_STOP_BITS_1   = 0, // 1   bit
-  CDC_LINE_CODING_STOP_BITS_1_5 = 1, // 1.5 bits
-  CDC_LINE_CODING_STOP_BITS_2   = 2, // 2   bits
-};
-
-// TODO Backward compatible for typos. Maybe removed in the future release
-#define CDC_LINE_CONDING_STOP_BITS_1   CDC_LINE_CODING_STOP_BITS_1
-#define CDC_LINE_CONDING_STOP_BITS_1_5 CDC_LINE_CODING_STOP_BITS_1_5
-#define CDC_LINE_CONDING_STOP_BITS_2   CDC_LINE_CODING_STOP_BITS_2
-
-enum {
-  CDC_LINE_CODING_PARITY_NONE  = 0,
-  CDC_LINE_CODING_PARITY_ODD   = 1,
-  CDC_LINE_CODING_PARITY_EVEN  = 2,
-  CDC_LINE_CODING_PARITY_MARK  = 3,
-  CDC_LINE_CODING_PARITY_SPACE = 4,
-};
-
 //--------------------------------------------------------------------+
-// Management Element Notification (Notification Endpoint)
+// Management Elemenent Notification (Notification Endpoint)
 //--------------------------------------------------------------------+
 
 /// 6.3 Notification Codes
@@ -291,11 +277,7 @@ typedef struct TU_ATTR_PACKED
   uint8_t bDescriptorType    ; ///< Descriptor Type, must be Class-Specific
   uint8_t bDescriptorSubType ; ///< Descriptor SubType one of above CDC_FUCN_DESC_
 
-  #ifdef AMBIQ_TUSB_CHANGE
   TU_KEIL_PACKED struct {
-  #else
-  struct {
-  #endif
     uint8_t handle_call    : 1; ///< 0 - Device sends/receives call management information only over the Communications Class interface. 1 - Device can send/receive call management information over a Data Class interface.
     uint8_t send_recv_call : 1; ///< 0 - Device does not handle call management itself. 1 - Device handles call management itself.
     uint8_t TU_RESERVED    : 6;
@@ -332,11 +314,7 @@ typedef struct TU_ATTR_PACKED
   uint8_t bLength            ; ///< Size of this descriptor in bytes.
   uint8_t bDescriptorType    ; ///< Descriptor Type, must be Class-Specific
   uint8_t bDescriptorSubType ; ///< Descriptor SubType one of above CDC_FUCN_DESC_
-  #ifdef AMBIQ_TUSB_CHANGE
   TU_KEIL_PACKED struct {
-  #else
-  struct {
-  #endif
     uint8_t require_pulse_setup   : 1; ///< Device requires extra Pulse_Setup request during pulse dialing sequence to disengage holding circuit.
     uint8_t support_aux_request   : 1; ///< Device supports the request combination of Set_Aux_Line_State, Ring_Aux_Jack, and notification Aux_Jack_Hook_State.
     uint8_t support_pulse_request : 1; ///< Device supports the request combination of Pulse_Setup, Send_Pulse, and Set_Pulse_Time.
@@ -364,11 +342,7 @@ typedef struct TU_ATTR_PACKED
   uint8_t bLength            ; ///< Size of this descriptor in bytes.
   uint8_t bDescriptorType    ; ///< Descriptor Type, must be Class-Specific
   uint8_t bDescriptorSubType ; ///< Descriptor SubType one of above CDC_FUCN_DESC_
-  #ifdef AMBIQ_TUSB_CHANGE
   TU_KEIL_PACKED struct {
-  #else
-  struct {
-  #endif
     uint8_t simple_mode           : 1;
     uint8_t standalone_mode       : 1;
     uint8_t computer_centric_mode : 1;
@@ -384,20 +358,14 @@ typedef struct TU_ATTR_PACKED
   uint8_t bLength            ; ///< Size of this descriptor in bytes.
   uint8_t bDescriptorType    ; ///< Descriptor Type, must be Class-Specific
   uint8_t bDescriptorSubType ; ///< Descriptor SubType one of above CDC_FUCN_DESC_
-  #ifdef AMBIQ_TUSB_CHANGE
   TU_KEIL_PACKED struct {
-  #else
-  struct {
-  #endif
     uint32_t interrupted_dialtone   : 1; ///< 0 : Reports only dialtone (does not differentiate between normal and interrupted dialtone). 1 : Reports interrupted dialtone in addition to normal dialtone
     uint32_t ringback_busy_fastbusy : 1; ///< 0 : Reports only dialing state. 1 : Reports ringback, busy, and fast busy states.
     uint32_t caller_id              : 1; ///< 0 : Does not report caller ID. 1 : Reports caller ID information.
     uint32_t incoming_distinctive   : 1; ///< 0 : Reports only incoming ringing. 1 : Reports incoming distinctive ringing patterns.
     uint32_t dual_tone_multi_freq   : 1; ///< 0 : Cannot report dual tone multi-frequency (DTMF) digits input remotely over the telephone line. 1 : Can report DTMF digits input remotely over the telephone line.
     uint32_t line_state_change      : 1; ///< 0 : Does not support line state change notification. 1 : Does support line state change notification
-    uint32_t TU_RESERVED0           : 2;
-    uint32_t TU_RESERVED1           : 16;
-    uint32_t TU_RESERVED2           : 8;
+    uint32_t TU_RESERVED            : 26;
   } bmCapabilities;
 }cdc_desc_func_telephone_call_state_reporting_capabilities_t;
 
@@ -422,10 +390,9 @@ TU_VERIFY_STATIC(sizeof(cdc_line_coding_t) == 7, "size is not correct");
 
 typedef struct TU_ATTR_PACKED
 {
-  uint16_t dtr : 1;
-  uint16_t rts : 1;
-  uint16_t : 6;
-  uint16_t : 8;
+  uint16_t dte_is_present : 1; ///< Indicates to DCE if DTE is presentor not. This signal corresponds to V.24 signal 108/2 and RS-232 signal DTR.
+  uint16_t half_duplex_carrier_control : 1;
+  uint16_t : 14;
 } cdc_line_control_state_t;
 
 TU_VERIFY_STATIC(sizeof(cdc_line_control_state_t) == 2, "size is not correct");

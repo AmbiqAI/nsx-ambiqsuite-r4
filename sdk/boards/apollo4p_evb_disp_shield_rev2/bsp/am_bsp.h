@@ -14,7 +14,7 @@
 
 //*****************************************************************************
 //
-// Copyright (c) 2024, Ambiq Micro, Inc.
+// Copyright (c) 2023, Ambiq Micro, Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 //
-// This is part of revision release_sdk_4_5_0-a1ef3b89f9 of the AmbiqSuite Development Package.
+// This is part of revision release_sdk_4_4_1-7498c7b770 of the AmbiqSuite Development Package.
 //
 //*****************************************************************************
 
@@ -74,13 +74,6 @@ extern "C"
 //*****************************************************************************
 extern am_devices_display_hw_config_t g_sDispCfg;
 #endif // DISP_CTRL_IP
-
-//*****************************************************************************
-//
-// DISPLAY_TE_PIN assignment.
-//
-//*****************************************************************************
-#define DISPLAY_TE_PIN          AM_BSP_GPIO_DISP_DSI_TE
 
 //*****************************************************************************
 //
@@ -171,44 +164,6 @@ extern am_devices_led_t am_bsp_psLEDs[AM_BSP_NUM_LEDS];
 
 //*****************************************************************************
 //
-//! ADC pin config definitions
-//
-//*****************************************************************************
-typedef enum
-{
-#ifdef AM_BSP_GPIO_ADCSE0
-    eADCSE0 = AM_BSP_GPIO_ADCSE0,
-#endif
-#ifdef AM_BSP_GPIO_ADCSE1
-    eADCSE1 = AM_BSP_GPIO_ADCSE1,
-#endif
-#ifdef AM_BSP_GPIO_ADCSE2
-    eADCSE2 = AM_BSP_GPIO_ADCSE2,
-#endif
-#ifdef AM_BSP_GPIO_ADCSE3
-    eADCSE3 = AM_BSP_GPIO_ADCSE3,
-#endif
-#ifdef AM_BSP_GPIO_ADCSE4
-    eADCSE4 = AM_BSP_GPIO_ADCSE4,
-#endif
-#ifdef AM_BSP_GPIO_ADCSE5
-    eADCSE5 = AM_BSP_GPIO_ADCSE5,
-#endif
-#ifdef AM_BSP_GPIO_ADCSE6
-    eADCSE6 = AM_BSP_GPIO_ADCSE6,
-#endif
-#ifdef AM_BSP_GPIO_ADCSE7
-    eADCSE7 = AM_BSP_GPIO_ADCSE7,
-#endif
-    //
-    //! force enum to 32 bits, and need one item that is not conditional on #ifdef
-    //
-    eADC_x32 = 0x7FFFFFFF,
-} am_bsp_adp_pins_e;
-
-
-//*****************************************************************************
-//
 // External function definitions.
 //
 //*****************************************************************************
@@ -256,7 +211,8 @@ extern void am_bsp_disp_reset_pins_clear(void);
 //! @brief Prepare the MCU for low power operation.
 //!
 //! This function enables several power-saving features of the MCU, and
-//! disables some of the less-frequently used peripherals.
+//! disables some of the less-frequently used peripherals. It also sets the
+//! system clock to 24 MHz.
 //!
 //! @return None.
 //
@@ -369,33 +325,6 @@ extern void am_bsp_sdio_pins_enable(uint8_t ui8BusWidth);
 //
 //*****************************************************************************
 extern void am_bsp_sdio_pins_disable(uint8_t ui8BusWidth);
-
-//*****************************************************************************
-//
-//! @brief Reset SDIO device via GPIO.
-//!
-//! This function reset SDIO device via GPIO
-//
-//*****************************************************************************
-extern void am_bsp_sdio_reset(void);
-
-//*****************************************************************************
-//
-//! @brief  Set up the SD's CD pin.
-//!
-//! This function configure SD's CD pin when enable or disable sd card detection.
-//
-//*****************************************************************************
-extern void am_bsp_sd_cd_pin_enable(bool bEnable);
-
-//*****************************************************************************
-//
-//! @brief  Set up the SD's WP pin.
-//!
-//! This function configure SD's WP pin to detect sd card write protection.
-//
-//*****************************************************************************
-extern void am_bsp_sd_wp_pin_enable(bool bEnable);
 
 //*****************************************************************************
 //
@@ -649,23 +578,6 @@ extern void am_bsp_external_vddusb0p9_switch(bool bEnable);
 
 //*****************************************************************************
 //
-//! @brief MSPI Pin Config Get
-//!
-//! @param eMSPIDevice - MSPI Device Type (HEX, OCTAL, ...)
-//! @param pPinnum - MSPI pin number to return to the device driver
-//! @param pPincfg - Pin configuration to return to the device driver
-//!
-//! This function is specific to the am_devices_mspi_psram_aps25616n.c
-//! It was written to get the APS256 CE pinout configuration.
-//! The more generic function is am_bsp_mspi_ce_pincfg_get
-//
-//*****************************************************************************
-#define PINCFG_GET_DEPRECATED 0xDE9CA7ED
-#define am_bsp_mspi_pincfg_get(eMSPIDevice, pPinnum, pPincfg) \
-            am_bsp_mspi_ce_pincfg_get(PINCFG_GET_DEPRECATED, eMSPIDevice, pPinnum, pPincfg)
-
-//*****************************************************************************
-//
 //! @brief MSPI CE Pin Config Get
 //!
 //! @param ui32Module - MSPI module 0/1/2
@@ -680,36 +592,6 @@ extern void am_bsp_mspi_ce_pincfg_get( uint32_t ui32Module,
                                        am_hal_mspi_device_e eMSPIDevice,
                                        uint32_t * pPinnum,
                                        am_hal_gpio_pincfg_t * pPincfg );
-
-//*****************************************************************************
-//
-//! @brief MSPI Reset Pin Config Get
-//!
-//! @param ui32Module - MSPI module 0/1/2/3
-//! @param eMSPIDevice - MSPI Device Type (HEX, OCTAL, ...)
-//! @param pPinnum - MSPI pin number to return to the device driver
-//! @param pPincfg - Pin configuration to return to the device driver
-//!
-//! This function returns the pinnum and pincfg for the Reset of MSPI requested.
-//
-//*****************************************************************************
-extern void am_bsp_mspi_reset_pincfg_get( uint32_t ui32Module,
-                                am_hal_mspi_device_e eMSPIDevice,
-                                uint32_t * pPinnum,
-                                am_hal_gpio_pincfg_t * pPincfg );
-
-//*****************************************************************************
-//
-//! @brief configure or de-configure adc pins
-//!
-//! @param tADCPin   adc ping number
-//! @param bPinADCModeEnable enable adc fucntion on pin when true
-//!
-//! @return standard Hal status code
-//
-//*****************************************************************************
-extern uint32_t am_bsp_adc_pin_config( am_bsp_adp_pins_e tADCPin,
-                                       bool bPinADCModeEnable ) ;
 
 #ifdef __cplusplus
 }

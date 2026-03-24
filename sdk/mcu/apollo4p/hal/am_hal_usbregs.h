@@ -39,7 +39,7 @@
 
 //*****************************************************************************
 //
-// Copyright (c) 2024, Ambiq Micro, Inc.
+// Copyright (c) 2023, Ambiq Micro, Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -71,7 +71,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 //
-// This is part of revision release_sdk_4_5_0-a1ef3b89f9 of the AmbiqSuite Development Package.
+// This is part of revision release_sdk_4_4_1-7498c7b770 of the AmbiqSuite Development Package.
 //
 //*****************************************************************************
 
@@ -438,7 +438,7 @@ typedef struct
             __IOM uint32_t RamBits                   : 4;
             __IOM uint32_t DMAChains                 : 4;
             __IOM uint32_t RSTS                      : 1;
-            __IM  uint32_t nop                       : 6;
+            __IM  uint32_t ARMCLANG_WORKAROUND              : 6; // armclang doesn't like anonymous bitfields
             __IOM uint32_t EDMAOUT                   : 1;
             __IOM uint32_t EDMAIN                    : 1;
         } INFO_b;
@@ -477,9 +477,9 @@ typedef struct
         struct
         {
             __IOM uint32_t PHYREFCLKDIS              : 1;
-            __IM  uint32_t nop                       : 7;
+            __IM  uint32_t ARMCLANG_WORKAROUND1      : 7;
             __IOM uint32_t CTRLAPBCLKDIS             : 1;
-            __IM  uint32_t nop1                      : 7;
+            __IM  uint32_t ARMCLANG_WORKAROUND2      : 7;
             __IOM uint32_t PHYAPBLCLKDIS             : 1;
         } CLKCTRL_b;
     };

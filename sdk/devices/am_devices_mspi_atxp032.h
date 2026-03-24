@@ -12,7 +12,7 @@
 
 //*****************************************************************************
 //
-// Copyright (c) 2024, Ambiq Micro, Inc.
+// Copyright (c) 2023, Ambiq Micro, Inc.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 //
-// This is part of revision release_sdk_4_5_0-a1ef3b89f9 of the AmbiqSuite Development Package.
+// This is part of revision release_sdk_4_4_1-7498c7b770 of the AmbiqSuite Development Package.
 //
 //*****************************************************************************
 
@@ -129,8 +129,8 @@ extern "C"
 //
 //*****************************************************************************
 #define AM_DEVICES_MSPI_ATXP032_PAGE_SIZE       0x100     //256 bytes, minimum program unit
-#define AM_DEVICES_MSPI_ATXP032_SECTOR_SIZE     0x10000   //64K bytes, this is the erase size for erase command 0xD8
-#define AM_DEVICES_MSPI_ATXP032_BLOCK_SIZE      0x1000   //4K bytes
+#define AM_DEVICES_MSPI_ATXP032_SECTOR_SIZE     0x10000   //64K bytes
+//#define AM_DEVICES_MSPI_ATXP032_SECTOR_SIZE     0x1000   //4K bytes
 #define AM_DEVICES_MSPI_ATXP032_MAX_BLOCKS      256
 #define AM_DEVICES_MSPI_ATXP032_MAX_SECTORS     256      // Sectors within 4-byte address range.
 //! @}
@@ -185,8 +185,16 @@ typedef struct
     uint32_t ui32Rxneg;
     uint32_t ui32Rxdqsdelay;
 } am_devices_mspi_atxp032_sdr_timing_config_t;
-#elif defined(AM_PART_APOLLO4P) || defined(AM_PART_APOLLO4L) || defined(AM_PART_APOLLO5_API)
-typedef am_hal_mspi_timing_scan_t am_devices_mspi_atxp032_sdr_timing_config_t;
+#elif defined(AM_PART_APOLLO4P) || defined(AM_PART_APOLLO4L)
+typedef struct
+{
+    bool            bTxNeg;
+    bool            bRxNeg;
+    bool            bRxCap;
+    uint8_t         ui8TxDQSDelay;
+    uint8_t         ui8RxDQSDelay;
+    uint8_t         ui8Turnaround;
+} am_devices_mspi_atxp032_sdr_timing_config_t;
 #endif
 
 //*****************************************************************************
@@ -473,8 +481,7 @@ extern uint32_t am_devices_mspi_atxp032_echo_with_inversion(void *pHandle,
                                                 uint8_t *pui8RxBuffer);
 #endif
 
-#if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B) || defined(AM_PART_APOLLO4P) || defined(AM_PART_APOLLO4L) || \
-    defined(AM_PART_APOLLO5_API)
+#if defined(AM_PART_APOLLO4) || defined(AM_PART_APOLLO4B) || defined(AM_PART_APOLLO4P) || defined(AM_PART_APOLLO4L)
 //*****************************************************************************
 //
 //! @brief Checks PSRAM timing and determine a delay setting.
@@ -510,6 +517,7 @@ extern uint32_t am_devices_mspi_atxp032_sdr_init_timing_check(uint32_t module,
 //*****************************************************************************
 extern uint32_t am_devices_mspi_atxp032_apply_sdr_timing(void *pHandle,
                        am_devices_mspi_atxp032_sdr_timing_config_t *pDevSdrCfg);
+
 #endif
 
 
@@ -525,3 +533,4 @@ extern uint32_t am_devices_mspi_atxp032_apply_sdr_timing(void *pHandle,
 //! @}
 //
 //*****************************************************************************
+
