@@ -1,0 +1,35 @@
+schema_version: 1
+
+module:
+  name: nsx-ambiqsuite-r4
+  type: sdk_provider
+  category: sdk_provider
+  provider: ambiqsuite-r4
+  version: "0.1.0"
+
+support:
+  ambiqsuite: true
+  zephyr: false
+
+build:
+  cmake:
+    package: nsx_soc_apollo4p
+    targets:
+      - nsx::sdk_ambiqsuite_r4
+
+depends:
+  required: []
+  optional: []
+
+compatibility:
+  boards:
+    - apollo4l_evb
+    - apollo4l_blue_evb
+    - apollo4p_evb
+    - apollo4p_blue_kbr_evb
+    - apollo4p_blue_kxr_evb
+  socs:
+    - apollo4l
+    - apollo4p
+  toolchains:
+    - arm-none-eabi-gcc
